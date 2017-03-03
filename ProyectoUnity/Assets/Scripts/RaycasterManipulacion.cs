@@ -1,0 +1,86 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RaycasterManipulacion : MonoBehaviour
+{
+    public float DistanciaAgarre = 5;
+
+    public static Vector3 PosicionAgarre;
+
+    GameController gc;
+
+    void Start()
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
+        gc = obj.GetComponent<GameController>();
+    }
+
+    void Update ()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        PosicionAgarre = Camera.main.transform.position + ray.direction * DistanciaAgarre;
+
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+
+        bool encontrado = false;
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+
+            GameObject g = hit.collider.gameObject;
+
+            if (gc.EstadoSeleccion == GameController.EnumSeleccion.Nada)
+            {
+                if (hit.collider.tag == "MaterialAgarrable")
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        MaterialAgarrable m = hit.collider.GetComponent<MaterialAgarrable>();
+                        gc.Agarrar(m);
+                    }
+                }
+            }
+            else if (gc.EstadoSeleccion == GameController.EnumSeleccion.Agarrado)
+            {
+                gc.DesmarcarTodosReactivos();
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    gc.Soltar();
+                }
+
+                if (hit.collider.tag == "MaterialReactivo")
+                {
+                    MaterialReactivo react = hit.collider.GetComponent<MaterialReactivo>();
+					if (gc.MarcarReactivo (react)) {
+						encontrado = true;
+					}
+                }
+            } else if(gc.EstadoSeleccion == GameController.EnumSeleccion.MarcandoReactivo)
+            {
+				if (Input.GetMouseButtonDown (0)) {
+					gc.ReaccionQuimica ();
+				}
+                if (Input.GetMouseButtonDown(1))
+                {
+                    gc.Soltar();
+                }
+
+                if (hit.collider.tag == "MaterialReactivo")
+                {
+                    encontrado = true;
+                }
+            }
+        } // for
+
+
+        if(gc.EstadoSeleccion == GameController.EnumSeleccion.MarcandoReactivo) {
+            if(encontrado == false)
+            {
+                gc.VolverEstadoAgarrado();
+            }
+        }
+    }
+}
