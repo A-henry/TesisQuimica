@@ -14,6 +14,9 @@ public class VasoPrecipitado : MonoBehaviour
     public float TiempoTitulacion = 2f;
     public float VolumenTitulacion = 50; // ml
 
+    public GameObject PrototipoGoteo;
+    public Transform LugarGoteo;
+
     bool estaTitulado;
     bool cambiandoColor;
     Color colorOriginal;
@@ -25,7 +28,6 @@ public class VasoPrecipitado : MonoBehaviour
         estaTitulado = false;
         colorOriginal = RendererLiquido.material.color;
 
-        StartCoroutine(CorutinaGoteo());
     }
 
     void Update()
@@ -65,19 +67,12 @@ public class VasoPrecipitado : MonoBehaviour
     }
 
 
-    private void IngresarLiquido(float cantidad)
+    public void IngresarLiquido(float cantidad)
     {
         CantidadLiquido = CantidadLiquido + cantidad;
+
+        Instantiate(PrototipoGoteo, LugarGoteo.position, LugarGoteo.rotation);
     }
 
 
-    IEnumerator CorutinaGoteo()
-    {
-        while(true)
-        { 
-            IngresarLiquido(1);
-
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
 }
