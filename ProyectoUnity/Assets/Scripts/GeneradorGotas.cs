@@ -12,8 +12,17 @@ public class GeneradorGotas : MonoBehaviour
 
     public Transform LugarGeneracionGotas;
 
-	void Start ()
+
+
+    ExperimentoTitulacion experimento;
+
+
+    void Start ()
     {
+        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
+        experimento = obj.GetComponent<ExperimentoTitulacion>();
+
+
         StartCoroutine(GenerarGotas());
 	}
 	
@@ -26,8 +35,10 @@ public class GeneradorGotas : MonoBehaviour
     {
         while(true)
         {
-            GameObject go = Instantiate(PrototipoGota, LugarGeneracionGotas.position, LugarGeneracionGotas.rotation);
-            go.GetComponent<Gota>().Cantidad = CantidadPorGota;
+            if(experimento.Empezado) { 
+                GameObject go = Instantiate(PrototipoGota, LugarGeneracionGotas.position, LugarGeneracionGotas.rotation);
+                go.GetComponent<Gota>().Cantidad = CantidadPorGota;
+            }
 
             yield return new WaitForSeconds(Frecuencia);
         }
