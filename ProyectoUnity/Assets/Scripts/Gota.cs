@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gota : MonoBehaviour
 {
     [HideInInspector]
-    public float Cantidad = 0.2f;
+    public float Cantidad = 0.1f;
 
     void OnTriggerEnter(Collider c)
     {

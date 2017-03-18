@@ -5,38 +5,20 @@ using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
 {
-
-
-    public float velocidadDespzamiento ;
+    public float VelocidadDesplazamiento = 2f;
+    public float VelocidadRotacion = 10f;
 
     void Start () {
 		
 	}
 	
-	void Update () {
-       
-        if(Input.GetMouseButton(1))
-        {
-            float pointer_y = Input.GetAxis("Mouse X");
-            float pointer_x = Input.GetAxis("Mouse Y");
-            gameObject.transform.Rotate(0, pointer_y * 2, 0);
+	void Update ()
+    {
+        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
 
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            this.transform.Translate(Vector3.forward * velocidadDespzamiento);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            this.transform.Translate(Vector3.forward * -velocidadDespzamiento);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            this.transform.Translate(Vector3.left * velocidadDespzamiento);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            this.transform.Translate(Vector3.right * velocidadDespzamiento);
-        }
+        transform.Translate(0, 0, v * VelocidadDesplazamiento * Time.deltaTime, Space.Self);
+
+        transform.Rotate(0, h * VelocidadRotacion * Time.deltaTime, 0);
     }
 }

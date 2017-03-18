@@ -6,9 +6,9 @@ public class GeneradorGotas : MonoBehaviour
 {
     public GameObject PrototipoGota;
     [Range(0.1f, 10f)]
-    public float Frecuencia = 2;
+    public float Frecuencia = 1;
     [Range(0.01f, 1)]
-    public float CantidadPorGota = 0.2f;
+    public float CantidadPorGota = 0.01f;
 
     public Transform LugarGeneracionGotas;
 
@@ -40,7 +40,7 @@ public class GeneradorGotas : MonoBehaviour
                 go.GetComponent<Gota>().Cantidad = CantidadPorGota;
             }
 
-            yield return new WaitForSeconds(Frecuencia);
+            yield return new WaitForSeconds(1f/Frecuencia);
         }
     }
 }

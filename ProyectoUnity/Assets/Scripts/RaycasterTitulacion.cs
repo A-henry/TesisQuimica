@@ -55,6 +55,5 @@ public class RaycasterTitulacion : MonoBehaviour
                 sensor = null;
             }
         }
-
     }
 }
