@@ -19,7 +19,7 @@ public class GeneradorGotas : MonoBehaviour
 
     void Start ()
     {
-        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
+        GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoTitulacion");
         experimento = obj.GetComponent<ExperimentoTitulacion>();
 
 

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class SensorExperimentoTitulacion : MonoBehaviour
 {
-    bool _dentro = false;
+    bool dentro = false;
+    bool activo = false;
+    GameObject player;
+
     public GameObject UI;
     public GameObject Camara;
     public GeneradorGotas Gotas;
@@ -19,15 +22,31 @@ public class SensorExperimentoTitulacion : MonoBehaviour
 	
 	void Update ()
     {
-		if(_dentro && Input.GetKeyDown(KeyCode.Return))
+		if(dentro && Input.GetKeyDown(KeyCode.Return))
         {
-            GameObject.FindGameObjectWithTag("Player").SetActive(false);
+            activo = true;
+
+            player = GameObject.FindGameObjectWithTag("Player");
+            player.SetActive(false);
 
             UI.SetActive(true);
             Camara.SetActive(true);
             Gotas.enabled = true;
             Vaso.enabled = true;
             Experimento.enabled = true;
+        }
+
+
+        if (activo && Input.GetKeyDown(KeyCode.Escape)) {
+            activo = false;
+
+            player.SetActive(true);
+
+            UI.SetActive(false);
+            Camara.SetActive(false);
+            Gotas.enabled = false;
+            Vaso.enabled = false;
+            Experimento.enabled = false;
         }
 	}
 
@@ -36,7 +55,7 @@ public class SensorExperimentoTitulacion : MonoBehaviour
     {
         if(c.tag == "Player")
         {
-            _dentro = true;
+            dentro = true;
         }
     }
 
@@ -45,7 +64,7 @@ public class SensorExperimentoTitulacion : MonoBehaviour
     {
         if (c.tag == "Player")
         {
-            _dentro = false;
+            dentro = false;
         }
     }
 }

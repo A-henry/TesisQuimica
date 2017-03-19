@@ -62,8 +62,8 @@ public class VasoPrecipitado : MonoBehaviour
         cambiandoColor = false;
         estaTitulado = false;
 
-        GameObject go = GameObject.FindGameObjectWithTag("GameController");
-        Assert.IsNotNull(go, "No se encuentra el objeto con tag GameController");
+        GameObject go = GameObject.FindGameObjectWithTag("ExperimentoTitulacion");
+        Assert.IsNotNull(go, "No se encuentra el objeto con tag ExperimentoTitulacion");
 
         experimento = go.GetComponent<ExperimentoTitulacion>();
         Assert.IsNotNull(experimento, "No es posible encontrar el objeto con script ExperimentoTitulacion");

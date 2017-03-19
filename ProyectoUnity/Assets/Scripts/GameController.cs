@@ -22,6 +22,25 @@ public class GameController : MonoBehaviour
 
 	float tiempoReaccionTranscurrido;
 
+    void Awake()
+    {
+        GameObject ui = GameObject.FindGameObjectWithTag("UIPanelMaterial");
+
+        if (ui != null)
+        {
+            uiPanelMaterial = ui.GetComponent<UIPanelMaterial>();
+            ui.SetActive(false);
+        }
+
+
+        ui = GameObject.FindGameObjectWithTag("UIExperimentos");
+        if (ui != null)
+        {
+            uiExperimentos = ui.GetComponent<UIExperimentos>();
+            ui.SetActive(true);
+        }
+    }
+
 	void Start () 
     {
 
@@ -44,19 +63,7 @@ public class GameController : MonoBehaviour
         }
 
 
-        GameObject ui = GameObject.FindGameObjectWithTag("UIPanelMaterial");
-
-		if (ui != null) {
-			uiPanelMaterial = ui.GetComponent<UIPanelMaterial> ();
-			ui.SetActive (false);
-		}
-
-
-		ui = GameObject.FindGameObjectWithTag("UIExperimentos");
-		if (ui != null) {
-			uiExperimentos = ui.GetComponent<UIExperimentos> ();
-			ui.SetActive (true);
-		}
+        
 	}
 	
 
