@@ -5,7 +5,7 @@ public class Material : MonoBehaviour
 {
     Renderer rend;
     Color colorOriginal;
-    GameController ctrl;
+    ExperimentoOxidacion ctrl;
 
     public string name;
     public string descripcion;

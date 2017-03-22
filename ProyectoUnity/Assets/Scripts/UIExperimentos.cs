@@ -7,7 +7,9 @@ public class UIExperimentos : MonoBehaviour
 {
 	public Text TextoAgarrado;
 	public Text TextoCantidadAgarrado;
+    public Text TextoVolumenInicial;
 	public GameObject SinAgarrar;
+    public Slider SliderVolumen;
 
 	public Text TextoNombreReactivo;
 	public Text TextoCantidadReactivo;
@@ -16,11 +18,35 @@ public class UIExperimentos : MonoBehaviour
     public Text TextoAzufreRestante;
 	public GameObject SinReactivo;
 
-	void Start ()
+
+    ExperimentoOxidacion experimento;
+
+
+
+    public float VolumenAcido
+    {
+        set
+        {
+            float VolumenCalculado = experimento.CambiarVolumenInicialAcido(value);
+            TextoVolumenInicial.text = string.Format("{0:00.00}", VolumenCalculado) + " ml.";
+        }
+    }
+
+
+    void Awake()
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
+        experimento = obj.GetComponent<ExperimentoOxidacion>();
+    }
+
+    void Start ()
 	{
 		MostrarAgarrable (false);
 		MostrarReactivo (false);
-	}
+
+        SliderVolumen.value = 0.5f;
+
+    }
 	
 	void Update () {
 		
@@ -89,6 +115,9 @@ public class UIExperimentos : MonoBehaviour
         TextoAzufreRestante.text = azufreFormateado;
     }
 
+
+
+    
 
 
 

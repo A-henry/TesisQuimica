@@ -32,13 +32,13 @@ public class MaterialAgarrable : MonoBehaviour
     Vector3 PosicionOriginal;
 
 
-    GameController gc;
+    ExperimentoOxidacion gc;
 
 
     void Start () {
 
-        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-        gc = obj.GetComponent<GameController>();
+        GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
+        gc = obj.GetComponent<ExperimentoOxidacion>();
 
 
         EstaAgarrado = false;
@@ -47,7 +47,7 @@ public class MaterialAgarrable : MonoBehaviour
 	
 	void Update ()
     {
-        if ((gc.EstadoSeleccion == GameController.EnumSeleccion.Agarrado ||  gc.EstadoSeleccion == GameController.EnumSeleccion.MarcandoReactivo) && 
+        if ((gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.Agarrado ||  gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.MarcandoReactivo) && 
             gc.Agarrado == this.gameObject && 
             EstaAgarrado == true
             )

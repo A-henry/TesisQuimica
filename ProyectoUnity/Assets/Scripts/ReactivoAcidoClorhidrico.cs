@@ -30,46 +30,21 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 	ReaccionCambioTamanho reaccionCantidadAzufre;
     ReaccionMovimientoAleatorio reaccionMovimientoAzufre;
 
+    float cantidadInicial;
+
 
 
 
 
 	void Start () 
 	{
-		GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-		gc = obj.GetComponent<GameController>();
+		GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
+		gc = obj.GetComponent<ExperimentoOxidacion>();
 
 		NombreReactivo = "Ácido Clorhidrico";
 
 		Usado = false;
 		GizmoSeleccion.SetActive (false);
-
-		LlenarTablaExperimental ();
-
-		Reaccion d;
-		CalcularReaccion (out d, Cantidad);
-		DatosReaccion = d;
-        TiempoReaccion = DatosReaccion.TiempoOxidacion;
-
-        for (int i = 0; i < Reacciones.Count; i++) {
-            Reacciones[i].TiempoReaccion = TiempoReaccion;
-
-			if(Reacciones[i].GetType() == typeof(ReaccionCantidadLiquido)) {
-				reaccionCantidadAcido = (ReaccionCantidadLiquido)Reacciones[i];
-			}
-
-			if(Reacciones[i].GetType() == typeof(ReaccionCambioTamanho)) {
-				reaccionCantidadAzufre = (ReaccionCambioTamanho)Reacciones[i];
-			}
-		}
-
-        reaccionCantidadAcido.CambiarCantidadInicial(DatosReaccion.CantidadInicialAcido);
-		reaccionCantidadAcido.CantidadFinal = DatosReaccion.CantidadFinalAcido;
-
-		reaccionCantidadAzufre.CantidadInicial = DatosReaccion.CantidadInicialAzufre;
-		reaccionCantidadAzufre.CantidadFinal = DatosReaccion.CantidadFinalAzufre;
-
-		reaccionCantidadAzufre.gameObject.SetActive (false);
 	}
 
 
@@ -160,6 +135,8 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 
 	public override void ReaccionQuimica()
 	{
+        CalcularReaccion();
+
 		Desmarcar ();
 
 		for (int i = 0; i < Reacciones.Count; i++) {
@@ -169,4 +146,61 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 		Usado = true;
 		reaccionCantidadAzufre.gameObject.SetActive (true);
 	}
+
+
+
+    public void CambiarCantidadInicial(float cantidad)
+    {
+        cantidadInicial = cantidad;
+
+        for (int i = 0; i < Reacciones.Count; i++)
+        {
+            Reacciones[i].TiempoReaccion = TiempoReaccion;
+
+            if (Reacciones[i].GetType() == typeof(ReaccionCantidadLiquido))
+            {
+                reaccionCantidadAcido = (ReaccionCantidadLiquido)Reacciones[i];
+                reaccionCantidadAcido.CambiarCantidadInicial(cantidad);
+                break;
+            }
+        }
+    }
+
+
+
+
+    private void CalcularReaccion()
+    {
+        Cantidad = cantidadInicial;
+
+        LlenarTablaExperimental();
+
+        Reaccion d;
+        CalcularReaccion(out d, Cantidad);
+        DatosReaccion = d;
+        TiempoReaccion = DatosReaccion.TiempoOxidacion;
+
+        for (int i = 0; i < Reacciones.Count; i++)
+        {
+            Reacciones[i].TiempoReaccion = TiempoReaccion;
+
+            if (Reacciones[i].GetType() == typeof(ReaccionCantidadLiquido))
+            {
+                reaccionCantidadAcido = (ReaccionCantidadLiquido)Reacciones[i];
+            }
+
+            if (Reacciones[i].GetType() == typeof(ReaccionCambioTamanho))
+            {
+                reaccionCantidadAzufre = (ReaccionCambioTamanho)Reacciones[i];
+            }
+        }
+
+        reaccionCantidadAcido.CambiarCantidadInicial(DatosReaccion.CantidadInicialAcido);
+        reaccionCantidadAcido.CantidadFinal = DatosReaccion.CantidadFinalAcido;
+
+        reaccionCantidadAzufre.CantidadInicial = DatosReaccion.CantidadInicialAzufre;
+        reaccionCantidadAzufre.CantidadFinal = DatosReaccion.CantidadFinalAzufre;
+
+        reaccionCantidadAzufre.gameObject.SetActive(false);
+    }
 }

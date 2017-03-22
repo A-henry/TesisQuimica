@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameController : MonoBehaviour
+public class ExperimentoOxidacion : MonoBehaviour
 {
+    public static float VOLUMEN_MINIMO_ACIDO = 10f;
+    public static float VOLUMEN_MAXIMO_ACIDO = 150f;
+
     public enum EnumSeleccion { Nada, Agarrado, MarcandoReactivo, Reaccionando };
 
     [Range(1, 10)]
@@ -16,6 +19,8 @@ public class GameController : MonoBehaviour
     public MaterialReactivo ReactivoEnReaccion;
     public EnumSeleccion EstadoSeleccion;
 
+
+    ReactivoAcidoClorhidrico acido;
     UIPanelMaterial uiPanelMaterial;
 	UIExperimentos uiExperimentos;
 
@@ -39,10 +44,6 @@ public class GameController : MonoBehaviour
             uiExperimentos = ui.GetComponent<UIExperimentos>();
             ui.SetActive(true);
         }
-    }
-
-	void Start () 
-    {
 
 
         EstadoSeleccion = EnumSeleccion.Nada;
@@ -59,11 +60,15 @@ public class GameController : MonoBehaviour
         Reactivos = new List<MaterialReactivo>();
         for (int i = 0; i < rs.Length; i++)
         {
-            Reactivos.Add(rs[i].GetComponent<MaterialReactivo>());
+            MaterialReactivo m = rs[i].GetComponent<MaterialReactivo>();
+            Reactivos.Add(m);
+
+            ReactivoAcidoClorhidrico ac = (ReactivoAcidoClorhidrico)m;
+            if(ac != null)
+            {
+                acido = ac;
+            }
         }
-
-
-        
 	}
 	
 
@@ -78,6 +83,16 @@ public class GameController : MonoBehaviour
 
 			tiempoReaccionTranscurrido = tiempoReaccionTranscurrido + Time.deltaTime;
 		}
+    }
+
+
+    public float CambiarVolumenInicialAcido(float volumenRelativo)
+    {
+        float vol = Mathf.Lerp(VOLUMEN_MINIMO_ACIDO, VOLUMEN_MAXIMO_ACIDO, volumenRelativo);
+
+        acido.CambiarCantidadInicial(vol); 
+
+        return vol;
     }
 
 
@@ -119,6 +134,9 @@ public class GameController : MonoBehaviour
 
     public void Soltar()
     {
+        if (Agarrado == null)
+            return;
+
         Agarrado.GetComponent<MaterialAgarrable>().Soltar();
         Agarrado = null;
 

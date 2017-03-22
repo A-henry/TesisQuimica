@@ -3,12 +3,12 @@ using System.Collections;
 
 public class raycaster : MonoBehaviour
 {
-    GameController gc;
+    ExperimentoOxidacion gc;
 
     void Start()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-        gc = obj.GetComponent<GameController>();
+        gc = obj.GetComponent<ExperimentoOxidacion>();
     }
 
 

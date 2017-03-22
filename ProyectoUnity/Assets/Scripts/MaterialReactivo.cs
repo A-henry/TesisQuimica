@@ -6,8 +6,10 @@ public class MaterialReactivo : MonoBehaviour
 {
 	public enum UnidadMedida {gr,ml,kg,cc};
 	public UnidadMedida Unidad;
+
 	[Range(10f, 150f)]
 	public float Cantidad = 50f;
+
 	public string CantidadFormateada 
 	{
 		get { 
@@ -25,7 +27,7 @@ public class MaterialReactivo : MonoBehaviour
 	[HideInInspector]
 	public float TiempoReaccion;
 
-    protected GameController gc;
+    protected ExperimentoOxidacion gc;
 
 	public GameObject GizmoSeleccion;
 	public List<ReaccionQuimica> Reacciones;
@@ -37,7 +39,7 @@ public class MaterialReactivo : MonoBehaviour
     void Start()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-        gc = obj.GetComponent<GameController>();
+        gc = obj.GetComponent<ExperimentoOxidacion>();
 
 		Usado = false;
 		GizmoSeleccion.SetActive (false);

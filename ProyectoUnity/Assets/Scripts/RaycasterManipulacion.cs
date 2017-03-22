@@ -8,12 +8,12 @@ public class RaycasterManipulacion : MonoBehaviour
 
     public static Vector3 PosicionAgarre;
 
-    GameController gc;
+    ExperimentoOxidacion gc;
 
     void Start()
     {
-        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-        gc = obj.GetComponent<GameController>();
+        GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
+        gc = obj.GetComponent<ExperimentoOxidacion>();
     }
 
     void Update ()
@@ -31,7 +31,7 @@ public class RaycasterManipulacion : MonoBehaviour
 
             GameObject g = hit.collider.gameObject;
 
-            if (gc.EstadoSeleccion == GameController.EnumSeleccion.Nada)
+            if (gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.Nada)
             {
                 if (hit.collider.tag == "MaterialAgarrable")
                 {
@@ -42,7 +42,7 @@ public class RaycasterManipulacion : MonoBehaviour
                     }
                 }
             }
-            else if (gc.EstadoSeleccion == GameController.EnumSeleccion.Agarrado)
+            else if (gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.Agarrado)
             {
                 gc.DesmarcarTodosReactivos();
 
@@ -58,7 +58,7 @@ public class RaycasterManipulacion : MonoBehaviour
 						encontrado = true;
 					}
                 }
-            } else if(gc.EstadoSeleccion == GameController.EnumSeleccion.MarcandoReactivo)
+            } else if(gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.MarcandoReactivo)
             {
 				if (Input.GetMouseButtonDown (0)) {
 					gc.ReaccionQuimica ();
@@ -76,7 +76,7 @@ public class RaycasterManipulacion : MonoBehaviour
         } // for
 
 
-        if(gc.EstadoSeleccion == GameController.EnumSeleccion.MarcandoReactivo) {
+        if(gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.MarcandoReactivo) {
             if(encontrado == false)
             {
                 gc.VolverEstadoAgarrado();

@@ -12,7 +12,7 @@ public class SensorExperimentoZinc : MonoBehaviour {
 
     public GameObject UI;
     public GameObject Camara;
-    public GameController game;
+    public ExperimentoOxidacion game;
 
 
     void Start ()
@@ -44,6 +44,7 @@ public class SensorExperimentoZinc : MonoBehaviour {
 
             UI.SetActive(false);
             Camara.SetActive(false);
+            game.Soltar();
             game.enabled = false;
         }
     }
