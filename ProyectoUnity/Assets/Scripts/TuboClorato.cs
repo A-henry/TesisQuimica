@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TuboClorato : MonoBehaviour
+public class TuboClorato : MaterialReactivo
 {
     public Transform PosicionCloratoEnPolvo;
     public GameObject PrototipoCloratoEnPolvo;
     public GameObject[] CloratoLiquido;
     public MeshRenderer TuboRenderer;
     public ParticleSystem Vapor;
+    public bool Disuelto;
 
 
     bool _terminandoReaccion;
@@ -20,16 +21,20 @@ public class TuboClorato : MonoBehaviour
     {
         nivelCloratoActual = null;
         _terminandoReaccion = false;
+        Disuelto = false;
     }
 
 
-	void Start ()
+	protected override void Start ()
     {
+        base.Start();
+
+        Cantidad = 0;
+
         for(int i = 0; i < CloratoLiquido.Length; i++)
         {
             CloratoLiquido[i].SetActive(false);
         }
-		
 	}
 
     
@@ -48,13 +53,6 @@ public class TuboClorato : MonoBehaviour
         }
 	}
 
-
-    public void HecharClorato()
-    {
-        GameObject cloratoGenerado = (GameObject)Instantiate(PrototipoCloratoEnPolvo, PosicionCloratoEnPolvo.position, PosicionCloratoEnPolvo.rotation);
-        Destroy(cloratoGenerado, 3f);
-        Invoke("AumentarClorato", 1f);
-    }
 
 
     public void Disolucion(float factor)
@@ -81,6 +79,7 @@ public class TuboClorato : MonoBehaviour
     {
         _terminandoReaccion = true;
         tasaEmisionVapor = 30;
+        Disuelto = true;
     }
 
 
@@ -92,9 +91,10 @@ public class TuboClorato : MonoBehaviour
 
 
 
-
-    private void AumentarClorato()
+    public void AumentarClorato(float cantidad)
     {
+        Cantidad = Cantidad + cantidad;
+
         if (nivelCloratoActual == null)
         {
             nivelCloratoActual = CloratoLiquido[0];
@@ -117,6 +117,10 @@ public class TuboClorato : MonoBehaviour
             nivelCloratoActual = CloratoLiquido[3];
             nivelCloratoActual.SetActive(true);
         }
+
+        GameObject cloratoGenerado = (GameObject)Instantiate(PrototipoCloratoEnPolvo, PosicionCloratoEnPolvo.position, PosicionCloratoEnPolvo.rotation);
+        Destroy(cloratoGenerado, 3f);
+        Invoke("AumentarClorato", 1f); // CORREGIR
 
     }
 }

@@ -25,34 +25,29 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 
 	public Reaccion DatosReaccion;
 
-	List<Reaccion> TablaExperimental;
+
+    protected ExperimentoOxidacion _experimento;
+    List<Reaccion> TablaExperimental;
 	ReaccionCantidadLiquido reaccionCantidadAcido;
 	ReaccionCambioTamanho reaccionCantidadAzufre;
     ReaccionMovimientoAleatorio reaccionMovimientoAzufre;
-
     float cantidadInicial;
 
 
 
 
 
-	void Start () 
+	protected override void Start () 
 	{
+        base.Start();
+
 		GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
-		gc = obj.GetComponent<ExperimentoOxidacion>();
+        _experimento = obj.GetComponent<ExperimentoOxidacion>();
 
 		NombreReactivo = "Ácido Clorhidrico";
-
-		Usado = false;
-		GizmoSeleccion.SetActive (false);
 	}
 
 
-
-
-	void Update () {
-		
-	}
 
 
 	public void CalcularReaccion(out Reaccion datos, float cantidadAcido)
@@ -83,7 +78,6 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 			}
 		}
 	}
-
 
 
     public float CalcularAcidoRestante(float tiempoTranscurrido)
@@ -137,13 +131,8 @@ public class ReactivoAcidoClorhidrico : MaterialReactivo
 	{
         CalcularReaccion();
 
-		Desmarcar ();
-
-		for (int i = 0; i < Reacciones.Count; i++) {
-			Reacciones [i].Reaccionar ();
-		}
-
-		Usado = true;
+        base.ReaccionQuimica();
+       
 		reaccionCantidadAzufre.gameObject.SetActive (true);
 	}
 

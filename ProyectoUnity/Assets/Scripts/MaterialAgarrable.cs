@@ -4,69 +4,52 @@ using UnityEngine;
 
 public class MaterialAgarrable : MonoBehaviour
 {
-	public enum UnidadMedida {gr,ml,kg,cc};
-
+    public enum UnidadMedida { gr, ml, kg, cc };
     public bool EstaAgarrado;
+    public string NombreMaterial;
+    [Range(1, 100)]
+    public float Cantidad;
+    public UnidadMedida Unidad;
 
-	public string NombreMaterial;
-	[Range(1, 100)]
-	public float Cantidad;
-	public UnidadMedida Unidad;
-
-
-	public string CantidadFormateada 
-	{
-		get { 
-			Dictionary<UnidadMedida, string> formatoUnidades = new Dictionary<UnidadMedida, string> ();
-			formatoUnidades.Add (UnidadMedida.gr, "Gr.");
-			formatoUnidades.Add (UnidadMedida.cc, "CC.");
-			formatoUnidades.Add (UnidadMedida.kg, "Kg.");
-			formatoUnidades.Add (UnidadMedida.ml, "Ml.");
-
-			return string.Format ("{0:0.00}", Cantidad) + " " + formatoUnidades [Unidad];
-		}	
-	}
-
-    
-
-    Vector3 PosicionOriginal;
-
-
-    ExperimentoOxidacion gc;
-
-
-    void Start () {
-
-        GameObject obj = GameObject.FindGameObjectWithTag("ExperimentoOxidacion");
-        gc = obj.GetComponent<ExperimentoOxidacion>();
-
-
-        EstaAgarrado = false;
-        PosicionOriginal = transform.position;
-	}
-	
-	void Update ()
+    public string CantidadFormateada
     {
-        if ((gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.Agarrado ||  gc.EstadoSeleccion == ExperimentoOxidacion.EnumSeleccion.MarcandoReactivo) && 
-            gc.Agarrado == this.gameObject && 
-            EstaAgarrado == true
-            )
+        get
         {
-            transform.position = RaycasterManipulacion.PosicionAgarre;
-        } else
-        {
-            transform.position = PosicionOriginal;
+            Dictionary<UnidadMedida, string> formatoUnidades = new Dictionary<UnidadMedida, string>();
+            formatoUnidades.Add(UnidadMedida.gr, "Gr.");
+            formatoUnidades.Add(UnidadMedida.cc, "CC.");
+            formatoUnidades.Add(UnidadMedida.kg, "Kg.");
+            formatoUnidades.Add(UnidadMedida.ml, "Ml.");
+
+            return string.Format("{0:0.00}", Cantidad) + " " + formatoUnidades[Unidad];
         }
     }
+
+    Collider _coll;
+
+    protected Vector3 _posicionOriginal;
+
+
+    protected virtual void Start ()
+    {
+        EstaAgarrado = false;
+        _posicionOriginal = transform.position;
+        _coll = GetComponent<Collider>();
+    }
+
 
 
     public void Agarrar()
     {
         EstaAgarrado = true;
+        _coll.enabled = false;
     }
+
+
 
     public void Soltar()
     {
         EstaAgarrado = false;
+        _coll.enabled = true;
     }
 }

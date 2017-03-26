@@ -53,7 +53,7 @@ public class UIExperimentos : MonoBehaviour
 	}
 
 
-	public void MostrarInformacion(MaterialAgarrable m) 
+	public void MostrarInformacion(MaterialAgarrableZinc m) 
 	{
 		MostrarAgarrable (true);
 

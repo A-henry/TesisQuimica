@@ -27,7 +27,7 @@ public class MaterialReactivo : MonoBehaviour
 	[HideInInspector]
 	public float TiempoReaccion;
 
-    protected ExperimentoOxidacion gc;
+    
 
 	public GameObject GizmoSeleccion;
 	public List<ReaccionQuimica> Reacciones;
@@ -36,21 +36,13 @@ public class MaterialReactivo : MonoBehaviour
 
 
 
-    void Start()
+    protected virtual void Start()
     {
-        GameObject obj = GameObject.FindGameObjectWithTag("GameController");
-        gc = obj.GetComponent<ExperimentoOxidacion>();
-
-		Usado = false;
+        Usado = false;
 		GizmoSeleccion.SetActive (false);
     }
 
- 
 	
-	void Update ()
-    {
-	}
-
 
     public void Marcar()
     {

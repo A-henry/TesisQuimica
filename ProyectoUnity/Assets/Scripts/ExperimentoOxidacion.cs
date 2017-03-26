@@ -122,7 +122,7 @@ public class ExperimentoOxidacion : MonoBehaviour
     }
 
 
-    public void Agarrar(MaterialAgarrable m) {
+    public void Agarrar(MaterialAgarrableZinc m) {
 
         Agarrado = m.gameObject;
         EstadoSeleccion = EnumSeleccion.Agarrado;
@@ -137,7 +137,7 @@ public class ExperimentoOxidacion : MonoBehaviour
         if (Agarrado == null)
             return;
 
-        Agarrado.GetComponent<MaterialAgarrable>().Soltar();
+        Agarrado.GetComponent<MaterialAgarrableZinc>().Soltar();
         Agarrado = null;
 
         if (EstadoSeleccion == EnumSeleccion.MarcandoReactivo)

@@ -10,6 +10,9 @@ public class ExperimentoClorato : MonoBehaviour
     bool _activo = false;
     float _tiempoRestante;
 
+    public GameObject Agarrado;
+
+
 
     void Awake()
     {
@@ -37,10 +40,96 @@ public class ExperimentoClorato : MonoBehaviour
 	}
 
 
-    public void Empezar()
+    public void SwitchMechero()
     {
-        _activo = true;
-        _tiempoRestante = TiempoDisolucion;
-        Mecha.Play();
+
+        if(_activo)
+        {
+            Mecha.Stop();
+            _activo = false;
+        } else if(Tubo.Cantidad > 0)
+        {
+            _activo = true;
+            Mecha.Play();
+            _tiempoRestante = TiempoDisolucion;
+        }
     }
+
+
+    public void Agarrar (GameObject go)
+    {
+        Agarrado = go;
+        go.GetComponent<MaterialAgarrable>().Agarrar();
+    }
+
+
+    public void Soltar()
+    {
+        Agarrado.GetComponent<MaterialAgarrable>().Soltar();
+        Agarrado = null;
+    }
+
+
+    public void Accion(GameObject reactivo)
+    {
+        MaterialReactivoCloratoEnPolvo clorato = reactivo.GetComponent<MaterialReactivoCloratoEnPolvo>();
+        TuboClorato tubo = reactivo.GetComponent<TuboClorato>();
+
+        MaterialAgarrableCuchara cuchara = Agarrado.GetComponent<MaterialAgarrableCuchara>();
+        MaterialAgarrablePapel papel = Agarrado.GetComponent<MaterialAgarrablePapel>();
+
+        if (clorato != null)
+        {
+            if(cuchara != null)
+            {
+                cuchara.Llenar();
+            }
+        } else if(tubo != null)
+        {
+            if(cuchara != null)
+            {
+                if(cuchara.Cantidad > 0)
+                {
+                    tubo.AumentarClorato(cuchara.Cantidad);
+                    cuchara.Vaciar();
+                }
+            } else if(papel != null)
+            {
+                if(Tubo.Cantidad > 0)
+                {
+                    tubo.HecharPapel();
+                    Destroy(Agarrado);
+                    Agarrado = null;
+                }
+            }
+        }
+    }
+
+
+    public bool SobreReactivo(MaterialReactivo reactivo)
+    {
+        if (Agarrado == null)
+            return false;
+
+        bool esCuchara = Agarrado.GetComponent<MaterialAgarrableCuchara>() != null;
+        bool esPapel = Agarrado.GetComponent<MaterialAgarrablePapel>() != null;
+
+        bool esTubo = reactivo is TuboClorato;
+        bool esClorato = reactivo is MaterialReactivoCloratoEnPolvo;
+
+        if (esCuchara && esClorato)
+            return true;
+
+        if (esCuchara && Agarrado.GetComponent<MaterialAgarrableCuchara>().Cantidad > 0 && esTubo)
+            return true;
+
+        if (esPapel && Tubo.Cantidad > 0 && Tubo.Disuelto)
+            return true;
+
+        return false;
+
+    }
+
+
+
 }

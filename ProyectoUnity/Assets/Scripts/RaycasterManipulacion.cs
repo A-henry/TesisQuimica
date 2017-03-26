@@ -37,7 +37,7 @@ public class RaycasterManipulacion : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        MaterialAgarrable m = hit.collider.GetComponent<MaterialAgarrable>();
+                        MaterialAgarrableZinc m = hit.collider.GetComponent<MaterialAgarrableZinc>();
                         gc.Agarrar(m);
                     }
                 }
