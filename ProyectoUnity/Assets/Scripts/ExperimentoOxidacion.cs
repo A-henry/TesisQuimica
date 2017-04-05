@@ -63,7 +63,7 @@ public class ExperimentoOxidacion : MonoBehaviour
             MaterialReactivo m = rs[i].GetComponent<MaterialReactivo>();
             Reactivos.Add(m);
 
-            ReactivoAcidoClorhidrico ac = (ReactivoAcidoClorhidrico)m;
+            ReactivoAcidoClorhidrico ac = m as ReactivoAcidoClorhidrico;
             if(ac != null)
             {
                 acido = ac;

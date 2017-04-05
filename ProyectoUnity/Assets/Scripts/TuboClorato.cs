@@ -8,6 +8,7 @@ public class TuboClorato : MaterialReactivo
     public GameObject PrototipoCloratoEnPolvo;
     public GameObject[] CloratoLiquido;
     public MeshRenderer TuboRenderer;
+    public UnityEngine.Material MaterialCaliente;
     public ParticleSystem Vapor;
     public bool Disuelto;
 
@@ -67,11 +68,18 @@ public class TuboClorato : MaterialReactivo
     }
 
 
-    public void HecharPapel ()
+    public void HecharPapel (GameObject papel)
+    {
+        papel.transform.position = PosicionCloratoEnPolvo.position;
+    }
+
+
+    public void PapelDetectado()
     {
         Vapor.Play();
-
-        Invoke("TerminarReaccion", 2);
+        TuboRenderer.material = MaterialCaliente;
+        ExperimentoClorato.Instancia.Reaccionar();
+        Invoke("TerminarReaccion", TiempoReaccion);
     }
 
 
@@ -79,7 +87,6 @@ public class TuboClorato : MaterialReactivo
     {
         _terminandoReaccion = true;
         tasaEmisionVapor = 30;
-        Disuelto = true;
     }
 
 
@@ -91,15 +98,30 @@ public class TuboClorato : MaterialReactivo
 
 
 
-    public void AumentarClorato(float cantidad)
+    public void HecharClorato(float cantidad)
     {
-        Cantidad = Cantidad + cantidad;
+        GameObject cloratoGenerado = (GameObject)Instantiate(PrototipoCloratoEnPolvo, PosicionCloratoEnPolvo.position, PosicionCloratoEnPolvo.rotation);
+        Destroy(cloratoGenerado, 3.5f);
+
+        StartCoroutine(_AumentarClorato(cantidad));
+    }
+
+
+    IEnumerator _AumentarClorato(float cantidad)
+    {
+        yield return new WaitForSeconds(1.3f);
+
+        Cantidad = Mathf.Min(2.5f, Cantidad + cantidad);
+
+        UIClorato.Instancia.CambiarCantidadClorato(Cantidad);
+        UIClorato.Instancia.InstruccionMechero();
 
         if (nivelCloratoActual == null)
         {
             nivelCloratoActual = CloratoLiquido[0];
             nivelCloratoActual.SetActive(true);
-        } else if(nivelCloratoActual == CloratoLiquido[0])
+        }
+        else if (nivelCloratoActual == CloratoLiquido[0])
         {
             nivelCloratoActual.SetActive(false);
             nivelCloratoActual = CloratoLiquido[1];
@@ -117,10 +139,5 @@ public class TuboClorato : MaterialReactivo
             nivelCloratoActual = CloratoLiquido[3];
             nivelCloratoActual.SetActive(true);
         }
-
-        GameObject cloratoGenerado = (GameObject)Instantiate(PrototipoCloratoEnPolvo, PosicionCloratoEnPolvo.position, PosicionCloratoEnPolvo.rotation);
-        Destroy(cloratoGenerado, 3f);
-        Invoke("AumentarClorato", 1f); // CORREGIR
-
     }
 }

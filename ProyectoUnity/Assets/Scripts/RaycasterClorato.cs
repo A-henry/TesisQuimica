@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaycasterClorato : MonoBehaviour {
+public class RaycasterClorato : MonoBehaviour
+{
 
     public float DistanciaAgarre = 5;
     public static Vector3 PosicionAgarre;
@@ -18,6 +19,7 @@ public class RaycasterClorato : MonoBehaviour {
         _experimento = obj.GetComponent<ExperimentoClorato>();
     }
 
+
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -30,7 +32,7 @@ public class RaycasterClorato : MonoBehaviour {
         }
 
         RaycastHit hit;
-        if (!Physics.Raycast(ray, out hit))
+        if (!Physics.Raycast(ray, out hit, 100, 1 << LayerMask.NameToLayer("Mouse")))
         {
             Tubo.Desmarcar();
             Clorato.Desmarcar();

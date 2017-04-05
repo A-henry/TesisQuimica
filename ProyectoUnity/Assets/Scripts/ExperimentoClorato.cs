@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class ExperimentoClorato : MonoBehaviour
 {
+    private static ExperimentoClorato _instancia;
+    public static ExperimentoClorato Instancia
+    {
+        get
+        {
+            return _instancia;
+        }
+    }
+
+
     public TuboClorato Tubo;
     public ParticleSystem Mecha;
+    [HideInInspector]
     public float TiempoDisolucion = 2f;
     bool _activo = false;
+    bool _reaccionando = false;
     float _tiempoRestante;
 
     public GameObject Agarrado;
@@ -16,33 +28,48 @@ public class ExperimentoClorato : MonoBehaviour
 
     void Awake()
     {
+        _instancia = this;
         _activo = false;
     }
 
 
-	void Start () {
-		
-	}
-	
 	void Update ()
     {
-        if (_activo)
+        if (Tubo.Disuelto && _reaccionando)
         {
+            UIClorato.Instancia.ActualizarTiempoReaccion(Tubo.TiempoReaccion - _tiempoRestante);
+
+            _tiempoRestante = _tiempoRestante - Time.deltaTime;
+
+            _tiempoRestante = Mathf.Max(0, _tiempoRestante);
+
+            float p = _tiempoRestante / Tubo.TiempoReaccion;
+        }
+        else if (_activo)
+        {
+            UIClorato.Instancia.ActualizarTiempoDisolucion(TiempoDisolucion - _tiempoRestante);
+
             _tiempoRestante = _tiempoRestante - Time.deltaTime;
 
             _tiempoRestante = Mathf.Max(0, _tiempoRestante);
 
             float p = _tiempoRestante / TiempoDisolucion;
 
+            if(_tiempoRestante == 0)
+            {
+                Tubo.Disuelto = true;
+
+                UIClorato.Instancia.InstruccionPapel();
+            }
+
             Tubo.Disolucion(p);
-        }
+        } 
 		
 	}
 
 
     public void SwitchMechero()
     {
-
         if(_activo)
         {
             Mecha.Stop();
@@ -51,6 +78,10 @@ public class ExperimentoClorato : MonoBehaviour
         {
             _activo = true;
             Mecha.Play();
+
+            TiempoDisolucion = _CalcularTiempoDisolucion(Tubo.Cantidad);
+            Tubo.TiempoReaccion = _CalcularTiempoReaccion(Tubo.Cantidad);
+
             _tiempoRestante = TiempoDisolucion;
         }
     }
@@ -90,19 +121,26 @@ public class ExperimentoClorato : MonoBehaviour
             {
                 if(cuchara.Cantidad > 0)
                 {
-                    tubo.AumentarClorato(cuchara.Cantidad);
+                    tubo.HecharClorato(cuchara.Cantidad);
                     cuchara.Vaciar();
                 }
             } else if(papel != null)
             {
-                if(Tubo.Cantidad > 0)
+                if(Tubo.Cantidad > 0 && Tubo.Disuelto)
                 {
-                    tubo.HecharPapel();
-                    Destroy(Agarrado);
                     Agarrado = null;
+                    papel.Hechar();
+                    tubo.HecharPapel(papel.gameObject);
                 }
             }
         }
+    }
+
+
+    public void Reaccionar()
+    {
+        _reaccionando = true;
+        _tiempoRestante = Tubo.TiempoReaccion;
     }
 
 
@@ -131,5 +169,36 @@ public class ExperimentoClorato : MonoBehaviour
     }
 
 
+
+    private float _CalcularTiempoDisolucion(float cantidad) // cantidad de clorato en polvo
+    {
+        if(Mathf.Abs(0.5f - cantidad) <= float.Epsilon)  return 15f;
+
+        if (Mathf.Abs(1f - cantidad) <= float.Epsilon) return 30f;
+
+        if (Mathf.Abs(1.5f - cantidad) <= float.Epsilon) return 43f;
+
+        if (Mathf.Abs(2f - cantidad) <= float.Epsilon) return 58f;
+
+
+        // por defecto si no es ninguno de los anteriores
+        return 71f;
+    }
+
+
+    private float _CalcularTiempoReaccion(float cantidad) // cantidad de clorato en polvo
+    {
+        if (Mathf.Abs(0.5f - cantidad) <= float.Epsilon) return 10f;
+
+        if (Mathf.Abs(1f - cantidad) <= float.Epsilon) return 12f;
+
+        if (Mathf.Abs(1.5f - cantidad) <= float.Epsilon) return 14f;
+
+        if (Mathf.Abs(2f - cantidad) <= float.Epsilon) return 15f;
+
+
+        // por defecto si no es ninguno de los anteriores
+        return 17f;
+    }
 
 }

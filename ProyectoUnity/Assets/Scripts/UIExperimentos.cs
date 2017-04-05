@@ -117,10 +117,6 @@ public class UIExperimentos : MonoBehaviour
 
 
 
-    
-
-
-
     private string FormatearTiempo(float tiempo)
 	{
 		int mins = (int)(tiempo/60);
@@ -128,11 +124,11 @@ public class UIExperimentos : MonoBehaviour
 
 		string res = "";
 		if (mins > 0) {
-			string m = mins > 1 ? "mins" : "min";
+			string m = mins > 1 ? "min." : "min.";
 			res = res + mins + " " + m + ", ";
 		}
 
-		res = res + string.Format("{0:0.00}",segs) + " segs";
+		res = res + string.Format("{0:0.00}",segs) + " seg.";
 
 		return res;
 	}

@@ -25,8 +25,7 @@ public class MaterialAgarrable : MonoBehaviour
         }
     }
 
-    Collider _coll;
-
+    protected Collider _coll;
     protected Vector3 _posicionOriginal;
 
 
