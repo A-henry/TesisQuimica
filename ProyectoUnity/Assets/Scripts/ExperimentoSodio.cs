@@ -38,14 +38,6 @@ public class ExperimentoSodio : MonoBehaviour
         _tablaExperimental.Add(new RelacionSodioTiempo(20, 3, 45));
     }
 
-	void Start () {
-		
-	}
-	
-	void Update () {
-		
-	}
-
 
 
     public void Agarrar(GameObject agarrable)
@@ -78,6 +70,8 @@ public class ExperimentoSodio : MonoBehaviour
         agua.TiempoReaccion = tiempoReaccion;
         agua.CantidadSodio = cantidad;
         agua.ReaccionQuimica();
+
+        UISodio.Instancia.ReaccionQuimica();
 
         Destroy(Agarrado);
 

@@ -7,8 +7,6 @@ public class MaterialAgarrableSodio : MaterialAgarrable
     void Update()
     {
         transform.position = EstaAgarrado ? RaycasterSodio.PosicionAgarre : _posicionOriginal;
-
-
         transform.localScale = Vector3.one * ((Cantidad / 20f) * 0.2f);
     }
 }

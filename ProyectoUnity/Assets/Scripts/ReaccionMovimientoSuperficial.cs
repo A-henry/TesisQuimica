@@ -37,6 +37,8 @@ public class ReaccionMovimientoSuperficial : ReaccionQuimica
             tiempoRestante = Mathf.Max(0, tiempoRestante);
 
             Esfera.localScale = _tamanhoOriginal * (tiempoRestante / TiempoReaccion);
+            UISodio.Instancia.ActualizarCantidadSodio(CantidadInicial * (tiempoRestante/TiempoReaccion));
+            UISodio.Instancia.ActualizarTiempo(TiempoReaccion - tiempoRestante);
 
             if (tiempoRestante <= 0)
             {

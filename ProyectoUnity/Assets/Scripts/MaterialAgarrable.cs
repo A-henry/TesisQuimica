@@ -38,7 +38,7 @@ public class MaterialAgarrable : MonoBehaviour
 
 
 
-    public void Agarrar()
+    public virtual void Agarrar()
     {
         EstaAgarrado = true;
         _coll.enabled = false;
@@ -46,7 +46,7 @@ public class MaterialAgarrable : MonoBehaviour
 
 
 
-    public void Soltar()
+    public virtual void Soltar()
     {
         EstaAgarrado = false;
         _coll.enabled = true;

@@ -49,7 +49,7 @@ public class MaterialReactivo : MonoBehaviour
 		GizmoSeleccion.SetActive (true);
     }
 
-    public void Desmarcar()
+    public virtual void Desmarcar()
     {
 		GizmoSeleccion.SetActive (false);
     }
